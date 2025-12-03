@@ -28,7 +28,6 @@ app.use('/api/channels', channelRoutes);
 app.use('/api/messages', messageRoutes);
 const presence = new Map();
 io.on('connection', (socket) => {
-    connect
     socket.on('authenticate', (payload) => {
         const { userId, name, channels } = payload || {};
         if (!userId) return;
@@ -80,6 +79,6 @@ io.on('connection', (socket) => {
     });
 });
 const PORT = process.env.PORT || 4000;
-app.listen(PORT,()=>{
-    console.log(`app listening at port ${PORT}`); 
+server.listen(PORT, () => {
+    console.log(`app listening at port ${PORT}`);
 })
