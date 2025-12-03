@@ -9,6 +9,7 @@ const channelRoutes = require('./routes/channels');
 const messageRoutes = require('./routes/messages');
 const Message = require('./models/Message');
 const Channel = require('./models/Channel');
+const path = require('path');
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
@@ -124,6 +125,14 @@ io.on('connection', (socket) => {
         broadcastPresence();
     });
 
+});
+
+const frontendPath = path.join(__dirname, "../frontend/dist");
+
+app.use(express.static(frontendPath));
+
+app.get("*", (req, res) => {
+    res.sendFile(path.join(frontendPath, "index.html"));
 });
 
 const PORT = process.env.PORT || 4000;
