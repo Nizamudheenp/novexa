@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { AuthContext } from "./context/AuthContext";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import Chat from "./pages/Chat";
+import Login from "./pages/Login.jsx";
+import Register from "./pages/Register.jsx";
+import Chat from "./pages/Chat.jsx";
 
 export default function App() {
   const { user } = useContext(AuthContext);
