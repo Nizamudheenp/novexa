@@ -2,6 +2,7 @@ const express = require('express');
 const Channel = require('../models/Channel');
 const auth = require('../middleware/auth');
 const router = express.Router();
+
 router.get('/', auth, async (req, res) => {
     const channels = await Channel.find().populate('members', 'name email');
     res.json(channels);
@@ -36,4 +37,11 @@ router.post('/:id/leave', auth, async (req, res) => {
     await ch.save();
     res.json({ message: 'left' });
 });
+
+router.get('/:id/members', auth, async (req, res) => {
+    const ch = await Channel.findById(req.params.id).populate('members', 'name email');
+    if (!ch) return res.status(404).json({ message: 'Not found' });
+    res.json(ch.members);
+});
+
 module.exports = router;

@@ -4,7 +4,15 @@ import {
   Box, List, ListItemButton, ListItemText, Divider, Button, TextField, Typography, Paper
 } from "@mui/material";
 
-export default function ChannelList({ channels = [], currentChannel, setCurrentChannel, token, onCreated }) {
+export default function ChannelList({
+  channels = [],
+  currentChannel,
+  setCurrentChannel,
+  token,
+  onCreated,
+  user,
+  refreshChannels
+}) {
   const [creating, setCreating] = useState(false);
   const [name, setName] = useState("");
 
@@ -31,17 +39,67 @@ export default function ChannelList({ channels = [], currentChannel, setCurrentC
           <Box sx={{ display: "flex", gap: 1, mt: 1 }}>
             <TextField size="small" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} />
             <Button variant="contained" onClick={create}>Create</Button>
+            <Button size="small" onClick={() => { setCreating(false); setName(""); }}>Cancel</Button>
           </Box>
         )}
       </Box>
 
       <List sx={{ overflowY: "auto", flex: 1 }}>
         <Divider />
-        {channels.map((c) => (
-          <ListItemButton key={c._id} selected={currentChannel?._id === c._id} onClick={() => setCurrentChannel(c)}>
-            <ListItemText primary={c.name} secondary={`${(c.members && c.members.length) || 0} members`} />
-          </ListItemButton>
-        ))}
+        {channels.map((c) => {
+          const isMember =
+            (c.members || []).some(m => (m._id || m.id) === (user._id || user.id));
+
+          return (
+            <ListItemButton
+              key={c._id}
+              selected={currentChannel?._id === c._id}
+              onClick={() => setCurrentChannel(c)}
+              sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}
+            >
+              <ListItemText
+                primary={c.name}
+                secondary={`${(c.members?.length) || 0} members`}
+              />
+
+              {isMember ? (
+                <Button
+                  size="small"
+                  onClick={async (e) => {
+                    e.stopPropagation();
+                    try {
+                      await api.post(`/channels/${c._id}/leave`, {}, {
+                        headers: { Authorization: `Bearer ${token}` }
+                      });
+                      refreshChannels && refreshChannels();
+                    } catch (err) {
+                      alert("Leave failed");
+                    }
+                  }}
+                >
+                  Leave
+                </Button>
+              ) : (
+                <Button
+                  size="small"
+                  onClick={async (e) => {
+                    e.stopPropagation();
+                    try {
+                      await api.post(`/channels/${c._id}/join`, {}, {
+                        headers: { Authorization: `Bearer ${token}` }
+                      });
+                      refreshChannels && refreshChannels();
+                    } catch (err) {
+                      alert("Join failed");
+                    }
+                  }}
+                >
+                  Join
+                </Button>
+              )}
+            </ListItemButton>
+          );
+        })}
       </List>
     </Paper>
   );
