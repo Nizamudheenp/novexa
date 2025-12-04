@@ -98,7 +98,7 @@ io.on('connection', (socket) => {
         if (!socket.userId) return;
         const msg = await Message.findById(messageId);
         if (!msg) return;
-        if (msg.sender.toString() !== socket.userId.toString()) return; 
+        if (msg.sender.toString() !== socket.userId.toString()) return;
         msg.content = newContent;
         msg.edited = true;
         await msg.save();
@@ -110,7 +110,7 @@ io.on('connection', (socket) => {
         if (!socket.userId) return;
         const msg = await Message.findById(messageId);
         if (!msg) return;
-        if (msg.sender.toString() !== socket.userId.toString()) return; 
+        if (msg.sender.toString() !== socket.userId.toString()) return;
         await Message.deleteOne({ _id: messageId });
         io.to(`channel_${msg.channel}`).emit('message:deleted', { messageId, channelId: msg.channel });
     });
