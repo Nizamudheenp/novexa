@@ -1,7 +1,5 @@
 import React, { useContext, useState } from "react";
 import { useNavigate, Link as RouterLink } from "react-router-dom";
-import { AuthContext } from "../context/AuthContext";
-import { api } from "../api";
 import {
   Container,
   Box,
@@ -11,6 +9,8 @@ import {
   Link,
   Paper
 } from "@mui/material";
+import { AuthContext } from "../context/AuthContext";
+import { api } from "../api";
 
 export default function Login() {
   const { login } = useContext(AuthContext);

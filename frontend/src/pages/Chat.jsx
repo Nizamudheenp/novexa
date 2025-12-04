@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState, useRef } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { api, API_BASE } from "../api";
 import ChannelList from "../components/ChannelList";
-import ChatWindow from "../components/ChatWindow";
 import { io } from "socket.io-client";
 
 import {
@@ -16,6 +15,7 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import LogoutIcon from "@mui/icons-material/Logout";
+import ChatWindow from "../components/ChatWindow";
 
 let socket;
 
