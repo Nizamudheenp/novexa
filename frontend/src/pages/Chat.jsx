@@ -87,7 +87,7 @@ export default function Chat() {
             </IconButton>
           )}
 
-          <Typography sx={{ flex: 1 }}>Mini Team Chat</Typography>
+          <Typography sx={{ flex: 1 }}>Novexa</Typography>
           <Typography sx={{ mr: 2 }}>{user?.name}</Typography>
 
           <IconButton color="inherit" onClick={logout}>
